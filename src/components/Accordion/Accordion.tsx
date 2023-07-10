@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { TreeData } from "../AccordionItemList/AccordionItemList";
+import { AccordionData } from "../AccordionItemList/AccordionItemList";
 import AccordionItemList from "../AccordionItemList/AccordionItemList";
 import "./Accordion.css";
+
 interface AccordionProps {
-  data: TreeData[];
+  data: AccordionData[];
 }
 
 const Accordion: React.FC<AccordionProps> = ({ data }) => {
-  const [treeData, setTreeData] = useState(data);
+  const [accordionData, setAccordionData] = useState<AccordionData[]>(data);
+  const [searchInput, setSearchInput] = useState<string>("");
 
   //обновляем состояние каждого элемента
   const handleToggle = (id: number) => {
-    setTreeData((prevData) => {
+    setAccordionData((prevData) => {
       return prevData.map((item) => {
         if (item.id === id) {
           return { ...item, open: !item.open };
@@ -23,7 +25,10 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
     });
   };
   //обновляем состояние дочерних элементов (children)
-  const toggleChildren = (children: TreeData[], id: number): TreeData[] => {
+  const toggleChildren = (
+    children: AccordionData[],
+    id: number,
+  ): AccordionData[] => {
     return children.map((item) => {
       if (item.id === id) {
         return { ...item, open: !item.open };
@@ -34,9 +39,43 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
     });
   };
 
+  const filterAccordion = (
+    data: AccordionData[],
+    searchInput: string,
+    openParents: number[] = [], // массив открытых родителей
+  ): AccordionData[] => {
+    return data.map((item) => {
+      const isOpen =
+        openParents.includes(item.id) ||
+        item.title.toUpperCase().includes(searchInput.toUpperCase());
+      const children = filterAccordion(
+        item.children,
+        searchInput,
+        isOpen ? [...openParents, item.id] : openParents, // передаем массив с id открытых родителей
+      );
+      const open = isOpen || children.some((child) => child.open);
+
+      return { ...item, open, children };
+    });
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const search = event.target.value.toUpperCase();
+    setSearchInput(search);
+    if (search === "") {
+      setAccordionData(data);
+    } else setAccordionData(filterAccordion(data, search));
+  };
+
   return (
     <div className="accordion">
-      <AccordionItemList data={treeData} handleToggle={handleToggle} />
+      <input
+        type="text"
+        value={searchInput}
+        onChange={handleSearch}
+        className="search"
+      />
+      <AccordionItemList data={accordionData} handleToggle={handleToggle} />
     </div>
   );
 };

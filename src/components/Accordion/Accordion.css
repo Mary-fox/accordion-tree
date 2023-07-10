@@ -1,10 +1,15 @@
 .accordion {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding-top: 50px;
+  gap: 10px;
   }
   
+.search {
+  width: 500px;
+}  
 
   
 
