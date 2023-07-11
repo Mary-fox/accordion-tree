@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { AccordionData } from "../AccordionItem/AccordionItem";
 import AccordionItemList from "../AccordionItemList/AccordionItemList";
 import "./Accordion.css";
@@ -12,7 +12,7 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
   const [searchInput, setSearchInput] = useState<string>("");
 
   //обновляем состояние каждого элемента
-  const handleToggle = (id: number) => {
+  const handleToggle = useCallback((id: number) => {
     setAccordionData((prevData) => {
       return prevData.map((item) => {
         if (item.id === id) {
@@ -23,21 +23,21 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
         return item;
       });
     });
-  };
+  }, []);
   //обновляем состояние дочерних элементов (children)
-  const toggleChildren = (
-    children: AccordionData[],
-    id: number,
-  ): AccordionData[] => {
-    return children.map((item) => {
-      if (item.id === id) {
-        return { ...item, open: !item.open };
-      } else if (item.children.length > 0) {
-        return { ...item, children: toggleChildren(item.children, id) };
-      }
-      return item;
-    });
-  };
+  const toggleChildren = useCallback(
+    (children: AccordionData[], id: number): AccordionData[] => {
+      return children.map((item) => {
+        if (item.id === id) {
+          return { ...item, open: !item.open };
+        } else if (item.children.length > 0) {
+          return { ...item, children: toggleChildren(item.children, id) };
+        }
+        return item;
+      });
+    },
+    [],
+  );
 
   const filterAccordion = (
     data: AccordionData[],

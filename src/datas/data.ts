@@ -12,7 +12,7 @@ const treeData = [
       children: [
         {
           id: 3,
-          title: "Подзаголовок 1, лежаший в заголовке 2",
+          title: "Подзаголовок, лежаший в заголовке 2",
           open: false,
           children: [],
         },

@@ -42,4 +42,6 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
     </div>
   );
 };
-export default React.memo(AccordionItem);
+export default React.memo(AccordionItem, (prevProps, nextProps) => {
+  return prevProps.item.open === nextProps.item.open;
+});
