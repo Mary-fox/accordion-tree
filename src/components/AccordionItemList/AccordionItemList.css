@@ -1,13 +1,3 @@
 .accordion__list {
     width: 500px;
 }
-.item {
-    display: flex;
-    cursor: pointer;
-    color: aliceblue;
-    gap: 10px;
-    border: 1px solid aliceblue;
-}
-.children-container .item {
-    padding-left: 10px;
-  }
