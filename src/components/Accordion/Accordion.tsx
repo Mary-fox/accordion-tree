@@ -39,33 +39,39 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
     [],
   );
 
-  const filterAccordion = (
-    data: AccordionData[],
-    searchInput: string,
-    openParents: number[] = [], // массив открытых родителей
-  ): AccordionData[] => {
-    return data.map((item) => {
-      const isOpen =
-        openParents.includes(item.id) ||
-        item.title.toUpperCase().includes(searchInput.toUpperCase());
-      const children = filterAccordion(
-        item.children,
-        searchInput,
-        isOpen ? [...openParents, item.id] : openParents, // передаем массив с id открытых родителей
-      );
-      const open = isOpen || children.some((child) => child.open);
+  const filterAccordion = useCallback(
+    (
+      data: AccordionData[],
+      searchInput: string,
+      openParents: number[] = [], // массив открытых родителей
+    ): AccordionData[] => {
+      return data.map((item) => {
+        const isOpen =
+          openParents.includes(item.id) ||
+          item.title.toUpperCase().includes(searchInput.toUpperCase());
+        const children = filterAccordion(
+          item.children,
+          searchInput,
+          isOpen ? [...openParents, item.id] : openParents, // передаем массив с id открытых родителей
+        );
+        const open = isOpen || children.some((child) => child.open);
 
-      return { ...item, open, children };
-    });
-  };
+        return { ...item, open, children };
+      });
+    },
+    [],
+  );
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const search = event.target.value.toUpperCase();
-    setSearchInput(search);
-    if (search === "") {
-      setAccordionData(data);
-    } else setAccordionData(filterAccordion(data, search));
-  };
+  const handleSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const search = event.target.value.toUpperCase();
+      setSearchInput(search);
+      if (search === "") {
+        setAccordionData(data);
+      } else setAccordionData(filterAccordion(accordionData, search));
+    },
+    [data, filterAccordion],
+  );
 
   return (
     <div className="accordion">

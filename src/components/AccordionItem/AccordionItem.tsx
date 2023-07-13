@@ -43,5 +43,18 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   );
 };
 export default React.memo(AccordionItem, (prevProps, nextProps) => {
-  return prevProps.item.open === nextProps.item.open;
+  if (prevProps.item.open !== nextProps.item.open) {
+    return false; // Если свойство `open` изменилось, перерисовываем компонент
+  }
+
+  // Дополнительно проверяем дочерние элементы на изменения
+  const prevChildren = prevProps.item.children;
+  const nextChildren = nextProps.item.children;
+  for (let i = 0; i < prevChildren.length; i++) {
+    if (prevChildren[i].open !== nextChildren[i].open) {
+      return false; // Если свойство `open` у дочерних элементов изменилось, перерисовываем компонент
+    }
+  }
+
+  return true; // Если ни одно из свойств не изменилось, не перерисовываем компонент
 });
