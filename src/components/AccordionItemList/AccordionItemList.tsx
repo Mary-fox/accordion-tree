@@ -1,7 +1,7 @@
 import React from "react";
 import { AccordionData } from "../AccordionItem/AccordionItem";
 import AccordionItem from "../AccordionItem/AccordionItem";
-import "./AccordionItemList.css";
+import styled from "styled-components";
 
 interface AccordionItemListProps {
   data: AccordionData[];
@@ -9,13 +9,17 @@ interface AccordionItemListProps {
   level?: number;
 }
 
+const AccordionListStyle = styled.ul`
+  padding: 0;
+`;
+
 const AccordionItemList: React.FC<AccordionItemListProps> = ({
   data,
   handleToggle,
   level = 0,
 }) => {
   return (
-    <div className="accordion__list">
+    <AccordionListStyle>
       {data.map((item) => (
         <AccordionItem
           key={item.id}
@@ -30,7 +34,7 @@ const AccordionItemList: React.FC<AccordionItemListProps> = ({
           />
         </AccordionItem>
       ))}
-    </div>
+    </AccordionListStyle>
   );
 };
 

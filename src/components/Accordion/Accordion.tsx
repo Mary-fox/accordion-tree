@@ -1,11 +1,23 @@
 import React, { useState, useCallback } from "react";
 import { AccordionData } from "../AccordionItem/AccordionItem";
 import AccordionItemList from "../AccordionItemList/AccordionItemList";
-import "./Accordion.css";
+import styled from "styled-components";
 
 interface AccordionProps {
   data: AccordionData[];
 }
+
+const AccordionBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+  gap: 10px;
+`;
+const Search = styled.input`
+  width: 500px;
+`;
 
 const Accordion: React.FC<AccordionProps> = ({ data }) => {
   const [accordionData, setAccordionData] = useState<AccordionData[]>(data);
@@ -74,15 +86,15 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
   );
 
   return (
-    <div className="accordion">
-      <input
+    <AccordionBlock>
+      <Search
         type="text"
         value={searchInput}
         onChange={handleSearch}
         className="search"
       />
       <AccordionItemList data={accordionData} handleToggle={handleToggle} />
-    </div>
+    </AccordionBlock>
   );
 };
 
