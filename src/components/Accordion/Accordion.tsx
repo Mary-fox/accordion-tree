@@ -50,22 +50,13 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
     },
     [],
   );
-
   const filterAccordion = useCallback(
-    (
-      data: AccordionData[],
-      searchInput: string,
-      openParents: number[] = [], // массив открытых родителей
-    ): AccordionData[] => {
+    (data: AccordionData[], searchInput: string): AccordionData[] => {
       return data.map((item) => {
         const isOpen =
-          openParents.includes(item.id) ||
-          item.title.toUpperCase().includes(searchInput.toUpperCase());
-        const children = filterAccordion(
-          item.children,
-          searchInput,
-          isOpen ? [...openParents, item.id] : openParents, // передаем массив с id открытых родителей
-        );
+          item.title.toUpperCase().includes(searchInput.toUpperCase()) ||
+          item.children.some((child) => child.open);
+        const children = filterAccordion(item.children, searchInput);
         const open = isOpen || children.some((child) => child.open);
 
         return { ...item, open, children };
@@ -73,7 +64,6 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
     },
     [],
   );
-
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const search = event.target.value.toUpperCase();
