@@ -12,7 +12,6 @@ export interface AccordionData {
 interface AccordionItemProps {
   item: AccordionData;
   handleToggle: (id: number) => void;
-  level: number;
   children?: React.ReactNode; // Используем React.ReactNode для дочерних элементов
 }
 

@@ -6,7 +6,6 @@ import styled from "styled-components";
 interface AccordionItemListProps {
   data: AccordionData[];
   handleToggle: (id: number) => void;
-  level?: number;
 }
 
 const AccordionListStyle = styled.ul`
@@ -16,26 +15,16 @@ const AccordionListStyle = styled.ul`
 const AccordionItemList: React.FC<AccordionItemListProps> = ({
   data,
   handleToggle,
-  level = 0,
 }) => {
   return (
     <AccordionListStyle>
       {data.map((item) => (
-        <AccordionItem
-          key={item.id}
-          item={item}
-          handleToggle={handleToggle}
-          level={level}
-        >
-          <AccordionItemList
-            data={item.children}
-            level={level + 1}
-            handleToggle={handleToggle}
-          />
+        <AccordionItem key={item.id} item={item} handleToggle={handleToggle}>
+          <AccordionItemList data={item.children} handleToggle={handleToggle} />
         </AccordionItem>
       ))}
     </AccordionListStyle>
   );
 };
 
-export default React.memo(AccordionItemList);
+export default AccordionItemList;
