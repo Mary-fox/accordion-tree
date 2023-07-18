@@ -1,4 +1,5 @@
-const treeData = [
+import { AccordionData } from "../components/AccordionItem/AccordionItem";
+const treeData:  AccordionData[] = [
     {
       id: 1,
       title: "Очень интересный заголовок под номером 1",

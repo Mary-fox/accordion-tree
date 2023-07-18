@@ -29,7 +29,7 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
       return prevData.map((item) => {
         if (item.id === id) {
           return { ...item, open: !item.open };
-        } else if (item.children.length > 0) {
+        } else if (item.children.length) {
           return { ...item, children: toggleChildren(item.children, id) };
         }
         return item;
@@ -42,7 +42,7 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
       return children.map((item) => {
         if (item.id === id) {
           return { ...item, open: !item.open };
-        } else if (item.children.length > 0) {
+        } else if (item.children.length) {
           return { ...item, children: toggleChildren(item.children, id) };
         }
         return item;
