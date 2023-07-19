@@ -39,7 +39,21 @@ const treeData:  AccordionData[] = [
               id: 7,
               title: "А тут 50",
               open: false,
-              children: [],
+              children: [
+                {
+                  id: 9,
+                  title: "Подзаголовок здесь будет под номером 123",
+                  open: false,
+                  children: [
+                    {
+                      id: 10,
+                      title: "А тут 78",
+                      open: false,
+                      children: [],
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
