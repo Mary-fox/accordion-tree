@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { AccordionData } from "../AccordionItem/AccordionItem";
+import { AccordionData } from "../../datas/data";
 import AccordionItemList from "../AccordionItemList/AccordionItemList";
 import styled from "styled-components";
 
@@ -23,33 +23,25 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
   const [accordionData, setAccordionData] = useState<AccordionData[]>(data);
   const [searchInput, setSearchInput] = useState<string>("");
 
-  //обновляем состояние каждого элемента
+  // обновляем состояние каждого элемента
   const handleToggle = useCallback((id: number) => {
     setAccordionData((prevData) => {
-      return prevData.map((item) => {
-        if (item.id === id) {
-          return { ...item, open: !item.open };
-        } else if (item.children.length) {
-          return { ...item, children: toggleChildren(item.children, id) };
-        }
-        return item;
-      });
+      const toggleChildren = (data: AccordionData[]): AccordionData[] => {
+        return data.map((item) => {
+          if (item.id === id) {
+            return { ...item, open: !item.open };
+          } else if (item.children.length) {
+            return { ...item, children: toggleChildren(item.children) };
+          }
+          return item;
+        });
+      };
+
+      return toggleChildren(prevData);
+      //Возвращаем новое состояние, обновленное функцией toggleChildren
     });
   }, []);
-  //обновляем состояние дочерних элементов (children)
-  const toggleChildren = useCallback(
-    (children: AccordionData[], id: number): AccordionData[] => {
-      return children.map((item) => {
-        if (item.id === id) {
-          return { ...item, open: !item.open };
-        } else if (item.children.length) {
-          return { ...item, children: toggleChildren(item.children, id) };
-        }
-        return item;
-      });
-    },
-    [],
-  );
+
   const filterAccordion = useCallback(
     (data: AccordionData[], searchInput: string): AccordionData[] => {
       return data.map((item) => {
@@ -64,6 +56,7 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
     },
     [],
   );
+
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const search = event.target.value.toUpperCase();
@@ -72,7 +65,7 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
         setAccordionData(data);
       } else setAccordionData(filterAccordion(accordionData, search));
     },
-    [data, filterAccordion],
+    [data, filterAccordion, accordionData],
   );
 
   return (

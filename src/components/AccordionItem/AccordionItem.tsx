@@ -1,13 +1,6 @@
 import React from "react";
+import { AccordionData } from "../../datas/data";
 import styled from "styled-components";
-// import "./AccordionItem.css";
-
-export interface AccordionData {
-  id: number;
-  title: string;
-  open: boolean;
-  children: AccordionData[];
-}
 
 interface AccordionItemProps {
   item: AccordionData;
@@ -38,10 +31,7 @@ const rerenderChildren = (
       return false; // Если свойство `open` любого из дочерних элементов изменилось, перерисовываем компонент
     }
 
-    if (
-      prevChildren[i].children.length > 0 &&
-      nextChildren[i].children.length > 0
-    ) {
+    if (prevChildren[i].children.length && nextChildren[i].children.length) {
       const equalityPropertiesChildren = rerenderChildren(
         prevChildren[i].children,
         nextChildren[i].children,
@@ -77,8 +67,11 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   );
 };
 export default React.memo(AccordionItem, (prevProps, nextProps) => {
-  if (prevProps.item.open !== nextProps.item.open) {
-    return false; // Если свойство `open` изменилось, перерисовываем компонент
+  if (
+    prevProps.item.open !== nextProps.item.open ||
+    prevProps.item.title !== nextProps.item.title
+  ) {
+    return false; // Если свойство `open` или `title` изменилось, перерисовываем компонент
   }
   return rerenderChildren(prevProps.item.children, nextProps.item.children);
 });

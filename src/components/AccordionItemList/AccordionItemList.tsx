@@ -1,5 +1,5 @@
 import React from "react";
-import { AccordionData } from "../AccordionItem/AccordionItem";
+import { AccordionData } from "../../datas/data";
 import AccordionItem from "../AccordionItem/AccordionItem";
 import styled from "styled-components";
 

@@ -1,13 +1,17 @@
 import React from "react";
-import "./MainPage.css";
 import Accordion from "./components/Accordion/Accordion";
 import treeData from "./datas/data";
+import styled from "styled-components";
 
-const MainPage: React.FC = () => {
+const MainWrapper = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
+`;
+const MainPage = () => {
   return (
-    <div className="wrapper">
+    <MainWrapper>
       <Accordion data={treeData} />
-    </div>
+    </MainWrapper>
   );
 };
 

@@ -1,5 +1,11 @@
-import { AccordionData } from "../components/AccordionItem/AccordionItem";
-const treeData:  AccordionData[] = [
+export interface AccordionData {
+  id: number;
+  title: string;
+  open: boolean;
+  children: AccordionData[];
+}
+
+const treeData: AccordionData[] = [
     {
       id: 1,
       title: "Очень интересный заголовок под номером 1",
